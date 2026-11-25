@@ -1,8 +1,11 @@
-/* Função da Vercel: entrega o link do botão das bandeiras só para quem NÃO está no Brasil.
-   O país vem do IP do visitante, informado pela própria Vercel no cabeçalho x-vercel-ip-country.
-   Brasileiros (e qualquer acesso sem país identificado) recebem "negado" e nunca recebem o link. */
+/* Função da Vercel: decide quais links entregar pelo país do IP do visitante
+   (cabeçalho x-vercel-ip-country, informado pela própria Vercel).
+   - Brasil: recebe os links dos botões 1 e 2.
+   - Fora do Brasil: recebe só o link do botão das bandeiras.
+   - País não identificado: não recebe nada. */
 
-// TROQUE pelo seu link do botão das bandeiras:
+const LINK_1 = "https://paylume.fans/l/7063e398?shk=cm5a01kz";
+const LINK_2 = "https://pay.orionbot.space/p/gaby-bracynhoyy634";
 const LINK_INTERNACIONAL = "https://paylume.fans/l/7c09c793?shk=wkxfa3rh";
 
 module.exports = function handler(req, res) {
@@ -10,10 +13,15 @@ module.exports = function handler(req, res) {
 
   res.setHeader("Cache-Control", "no-store");
 
-  if (!pais || pais === "BR") {
+  if (!pais) {
     res.status(403).json({ ok: false });
     return;
   }
 
-  res.status(200).json({ ok: true, url: LINK_INTERNACIONAL });
+  if (pais === "BR") {
+    res.status(200).json({ ok: true, br: true, links: { a: LINK_1, b: LINK_2 } });
+    return;
+  }
+
+  res.status(200).json({ ok: true, br: false, url: LINK_INTERNACIONAL });
 };
