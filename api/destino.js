@@ -6,7 +6,7 @@
 
 const LINK_1 = "https://paylume.fans/l/7063e398?shk=cm5a01kz";
 const LINK_2 = "https://pay.orionbot.space/p/gaby-bracynhoyy634";
-const LINK_INTERNACIONAL = "https://paylume.fans/l/7c09c793?shk=wkxfa3rh";
+const LINK_INTERNACIONAL = "https://paylume.fans/l/193a2559";
 
 module.exports = function handler(req, res) {
   const pais = String(req.headers["x-vercel-ip-country"] || "").toUpperCase();
